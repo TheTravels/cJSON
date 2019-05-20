@@ -146,9 +146,11 @@ static void * CJSON_CDECL internal_realloc(void *pointer, size_t size)
     return realloc(pointer, size);
 }
 #else
-//#define internal_malloc malloc
-//#define internal_free free
-//#define internal_realloc realloc
+/**
+#define internal_malloc malloc
+#define internal_free free
+#define internal_realloc realloc
+*/
 #include "mem_malloc.h"
 #define internal_malloc mem_malloc
 #define internal_free mem_free
