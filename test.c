@@ -24,6 +24,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "cJSON.h"
+#include "mem_malloc.h"
 
 /* Used by some code below as an example datatype. */
 struct record
@@ -173,12 +174,14 @@ static void create_objects(void)
     cJSON_AddNumberToObject(fmt, "height", 1080);
     cJSON_AddFalseToObject (fmt, "interlace");
     cJSON_AddNumberToObject(fmt, "frame rate", 24);
+	printf("mem perused:%d \n", mem_perused);
 
     /* Print to text */
     if (print_preallocated(root) != 0) {
         cJSON_Delete(root);
         exit(EXIT_FAILURE);
     }
+	printf("mem perused:%d \n", mem_perused);
     cJSON_Delete(root);
 
     /* Our "days of the week" array: */
@@ -188,6 +191,7 @@ static void create_objects(void)
         cJSON_Delete(root);
         exit(EXIT_FAILURE);
     }
+	printf("mem perused:%d \n", mem_perused);
     cJSON_Delete(root);
 
     /* Our matrix: */
@@ -203,6 +207,7 @@ static void create_objects(void)
         cJSON_Delete(root);
         exit(EXIT_FAILURE);
     }
+	printf("mem perused:%d \n", mem_perused);
     cJSON_Delete(root);
 
     /* Our "gallery" item: */
@@ -221,6 +226,7 @@ static void create_objects(void)
         cJSON_Delete(root);
         exit(EXIT_FAILURE);
     }
+	printf("mem perused:%d \n", mem_perused);
     cJSON_Delete(root);
 
     /* Our array of "records": */
@@ -244,6 +250,7 @@ static void create_objects(void)
         cJSON_Delete(root);
         exit(EXIT_FAILURE);
     }
+	printf("mem perused:%d \n", mem_perused);
     cJSON_Delete(root);
 
     root = cJSON_CreateObject();
@@ -253,6 +260,7 @@ static void create_objects(void)
         cJSON_Delete(root);
         exit(EXIT_FAILURE);
     }
+	printf("mem perused:%d \n", mem_perused);
     cJSON_Delete(root);
 }
 
