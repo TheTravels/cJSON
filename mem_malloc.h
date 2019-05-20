@@ -9,8 +9,8 @@
 * merafour@163.com
 * https://github.com/merafour
 ******************************************************************************/
-#ifndef _MALLOC_H_
-#define _MALLOC_H_
+#ifndef _MEM_MALLOC_H_
+#define _MEM_MALLOC_H_
 
 #ifdef __cplusplus
 extern "C"
@@ -58,5 +58,5 @@ extern void* smem_realloc(void *ptr, size_t size);	            /* 重新分配内存 *
 }
 #endif
 
-#endif /* _MALLOC_H_ */
+#endif /* _MEM_MALLOC_H_ */
 
