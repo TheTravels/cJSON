@@ -146,9 +146,13 @@ static void * CJSON_CDECL internal_realloc(void *pointer, size_t size)
     return realloc(pointer, size);
 }
 #else
-#define internal_malloc malloc
-#define internal_free free
-#define internal_realloc realloc
+//#define internal_malloc malloc
+//#define internal_free free
+//#define internal_realloc realloc
+#include "mem_malloc.h"
+#define internal_malloc mem_malloc
+#define internal_free mem_free
+#define internal_realloc mem_realloc
 #endif
 
 /* strlen of character literals resolved at compile time */
@@ -182,19 +186,19 @@ CJSON_PUBLIC(void) cJSON_InitHooks(cJSON_Hooks* hooks)
     if (hooks == NULL)
     {
         /* Reset hooks */
-        global_hooks.allocate = malloc;
-        global_hooks.deallocate = free;
-        global_hooks.reallocate = realloc;
+        global_hooks.allocate = mem_malloc;
+        global_hooks.deallocate = mem_free;
+        global_hooks.reallocate = mem_realloc;
         return;
     }
 
-    global_hooks.allocate = malloc;
+    global_hooks.allocate = mem_malloc;
     if (hooks->malloc_fn != NULL)
     {
         global_hooks.allocate = hooks->malloc_fn;
     }
 
-    global_hooks.deallocate = free;
+    global_hooks.deallocate = mem_free;
     if (hooks->free_fn != NULL)
     {
         global_hooks.deallocate = hooks->free_fn;
@@ -204,7 +208,7 @@ CJSON_PUBLIC(void) cJSON_InitHooks(cJSON_Hooks* hooks)
     global_hooks.reallocate = NULL;
     if ((global_hooks.allocate == malloc) && (global_hooks.deallocate == free))
     {
-        global_hooks.reallocate = realloc;
+        global_hooks.reallocate = mem_realloc;
     }
 }
 
