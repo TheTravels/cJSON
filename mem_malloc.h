@@ -42,9 +42,9 @@ extern "C"
  */
 #define MEM_BLOCK_WIDTH			4                               
 /**
- * 最大管理内存 2K
+ * 最大管理内存 20K
  */
-#define MEM_MAX_SIZE			(2*1024)  						
+#define MEM_MAX_SIZE			(20*1024)  						
 
 extern uint8_t mem_perused(void);					            /* 内存使用率 */
 extern void  mem_free(void *ptr);  				                /* 内存释放 */
