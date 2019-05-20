@@ -36,9 +36,13 @@ extern "C"
 #define MAX_BLOCK_SIZE_32bit    0x04
 #define MAX_BLOCK_SIZE   MAX_BLOCK_SIZE_8bit   
 
-// 内存块宽度, 内存块大小(2^MEM_BLOCK_WIDTH), 单位字节.用于加快内存分配时的运算速度
+/**
+ * 内存块宽度, 内存块大小(2^MEM_BLOCK_WIDTH), 单位字节.用于加快内存分配时的运算速度
+ */
 #define MEM_BLOCK_WIDTH			4                               
-// 最大管理内存 2K
+/**
+ * 最大管理内存 2K
+ */
 #define MEM_MAX_SIZE			(2*1024)  						
 
 extern uint8_t mem_perused(void);					            // 内存使用率
