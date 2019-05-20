@@ -1,10 +1,10 @@
-CJSON_OBJ = cJSON.o
+CJSON_OBJ = cJSON.o mem_malloc.o
 UTILS_OBJ = cJSON_Utils.o
 CJSON_LIBNAME = libcjson
 UTILS_LIBNAME = libcjson_utils
 CJSON_TEST = cJSON_test
 
-CJSON_TEST_SRC = cJSON.c test.c
+CJSON_TEST_SRC = cJSON.c mem_malloc.c test.c
 
 LDLIBS = -lm
 
@@ -81,7 +81,7 @@ test: tests
 
 #tests
 #cJSON
-$(CJSON_TEST): $(CJSON_TEST_SRC) cJSON.h
+$(CJSON_TEST): $(CJSON_TEST_SRC) cJSON.h mem_malloc.h
 	$(CC) $(R_CFLAGS) $(CJSON_TEST_SRC)  -o $@ $(LDLIBS) -I.
 
 #static libraries
@@ -102,7 +102,7 @@ $(UTILS_SHARED_VERSION): $(UTILS_OBJ)
 
 #objects
 #cJSON
-$(CJSON_OBJ): cJSON.c cJSON.h
+$(CJSON_OBJ): cJSON.c cJSON.h mem_malloc.c mem_malloc.h
 #cJSON_Utils
 $(UTILS_OBJ): cJSON_Utils.c cJSON_Utils.h
 
@@ -123,7 +123,7 @@ $(UTILS_SHARED): $(UTILS_SHARED_SO)
 #cJSON
 install-cjson:
 	mkdir -p $(INSTALL_LIBRARY_PATH) $(INSTALL_INCLUDE_PATH)
-	$(INSTALL) cJSON.h $(INSTALL_INCLUDE_PATH)
+	$(INSTALL) cJSON.h mem_malloc.h $(INSTALL_INCLUDE_PATH)
 	$(INSTALL) $(CJSON_SHARED) $(CJSON_SHARED_SO) $(CJSON_SHARED_VERSION) $(INSTALL_LIBRARY_PATH)
 #cJSON_Utils
 install-utils: install-cjson
@@ -140,6 +140,7 @@ uninstall-cjson: uninstall-utils
 	$(RM) $(INSTALL_LIBRARY_PATH)/$(CJSON_SHARED_SO)
 	rmdir $(INSTALL_LIBRARY_PATH)
 	$(RM) $(INSTALL_INCLUDE_PATH)/cJSON.h
+	$(RM) $(INSTALL_INCLUDE_PATH)/mem_malloc.h
 	rmdir $(INSTALL_INCLUDE_PATH)
 #cJSON_Utils
 uninstall-utils:
