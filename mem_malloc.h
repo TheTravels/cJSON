@@ -54,5 +54,5 @@ extern void* mem_realloc(void *ptr, const uint32_t size);	    /* 重新分配内存 */
 }
 #endif
 
-#endif // _MALLOC_H_
+#endif /* _MALLOC_H_ */
 
