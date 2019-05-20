@@ -25,7 +25,7 @@
 
 /* mem align 4 byte */
 /*__align(4) static uint8_t mem_ram[MEM_ALLOC_TABLE_SIZE<<MEM_BLOCK_WIDTH]={0};			   */ /* SRAM内存池 */
-__align(4) static uint8_t __attribute__ ((aligned (16))) mem_ram[MEM_ALLOC_TABLE_SIZE<<MEM_BLOCK_WIDTH]={0};			    /* SRAM内存池 */
+static uint8_t __attribute__ ((aligned (16))) mem_ram[MEM_ALLOC_TABLE_SIZE<<MEM_BLOCK_WIDTH]={0};			    /* SRAM内存池 */
 /* SRAM内存表 */
 #if MAX_BLOCK_SIZE == MAX_BLOCK_SIZE_8bit
 static uint8_t mem_map[MEM_ALLOC_TABLE_SIZE]={0};			        
@@ -122,7 +122,7 @@ void mem_free(void *ptr)
 {  
 	uint32_t offset;  
     if(ptr==NULL) return ;
- 	offset=(uint32_t)ptr-(uint32_t)mem_ram;
+ 	offset=(uint32_t)((uint8_t*)ptr-(uint8_t*)mem_ram);
 	if(!ready)
 	{   
 		init();
