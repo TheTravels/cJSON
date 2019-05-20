@@ -56,7 +56,7 @@ static int print_preallocated(cJSON *root)
     /* create buffer to succeed */
     /* the extra 5 bytes are because of inaccuracies when reserving memory */
     len = strlen(out) + 5;
-    buf = (char*)malloc(len);
+    buf = (char*)mem_malloc(len);
     if (buf == NULL)
     {
         printf("Failed to allocate memory.\n");
@@ -65,7 +65,7 @@ static int print_preallocated(cJSON *root)
 
     /* create buffer to fail */
     len_fail = strlen(out);
-    buf_fail = (char*)malloc(len_fail);
+    buf_fail = (char*)mem_malloc(len_fail);
     if (buf_fail == NULL)
     {
         printf("Failed to allocate memory.\n");
@@ -80,9 +80,9 @@ static int print_preallocated(cJSON *root)
             printf("cJSON_Print result:\n%s\n", out);
             printf("cJSON_PrintPreallocated result:\n%s\n", buf);
         }
-        free(out);
-        free(buf_fail);
-        free(buf);
+        mem_free(out);
+        mem_free(buf_fail);
+        mem_free(buf);
         return -1;
     }
 
@@ -94,15 +94,15 @@ static int print_preallocated(cJSON *root)
         printf("cJSON_PrintPreallocated failed to show error with insufficient memory!\n");
         printf("cJSON_Print result:\n%s\n", out);
         printf("cJSON_PrintPreallocated result:\n%s\n", buf_fail);
-        free(out);
-        free(buf_fail);
-        free(buf);
+        mem_free(out);
+        mem_free(buf_fail);
+        mem_free(buf);
         return -1;
     }
 
-    free(out);
-    free(buf_fail);
-    free(buf);
+    mem_free(out);
+    mem_free(buf_fail);
+    mem_free(buf);
     return 0;
 }
 
