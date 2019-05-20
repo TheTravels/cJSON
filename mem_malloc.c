@@ -9,7 +9,7 @@
 * merafour@163.com
 * https://github.com/merafour
 ******************************************************************************/
-#include "malloc.h"	
+#include "mem_malloc.h"	
 #include <string.h>
 
 #ifndef MEM_BLOCK_WIDTH
@@ -20,11 +20,12 @@
 #endif
 
 #define MEM_BLOCK_SIZE			(0x1<<MEM_BLOCK_WIDTH)                  /* 内存块大小(2^MEM_BLOCK_WIDTH), 单位字节 */
-//#define MEM_ALLOC_TABLE_SIZE	MEM_MAX_SIZE/MEM_BLOCK_SIZE 	        /* 内存表大小 */
+/*#define MEM_ALLOC_TABLE_SIZE	MEM_MAX_SIZE/MEM_BLOCK_SIZE 	         内存表大小 */
 #define MEM_ALLOC_TABLE_SIZE	(((MEM_MAX_SIZE)>>MEM_BLOCK_WIDTH)+1) 	/* 内存表大小 */
 
-// mem align 4 byte
-__align(4) static uint8_t mem_ram[MEM_ALLOC_TABLE_SIZE<<MEM_BLOCK_WIDTH]={0};			    /* SRAM内存池 */
+/* mem align 4 byte */
+/*__align(4) static uint8_t mem_ram[MEM_ALLOC_TABLE_SIZE<<MEM_BLOCK_WIDTH]={0};			   */ /* SRAM内存池 */
+__align(4) static uint8_t __attribute__ ((aligned (16))) mem_ram[MEM_ALLOC_TABLE_SIZE<<MEM_BLOCK_WIDTH]={0};			    /* SRAM内存池 */
 /* SRAM内存表 */
 #if MAX_BLOCK_SIZE == MAX_BLOCK_SIZE_8bit
 static uint8_t mem_map[MEM_ALLOC_TABLE_SIZE]={0};			        
@@ -58,7 +59,7 @@ uint8_t mem_perused(void)
     {  
 		if(mem_map[i])used+=100; 
     } 
-    return (used)/(mem_map_size);  
+    return (uint8_t)((used)/(mem_map_size));  
 }  
 void* mem_malloc(const uint32_t size)
 {  
@@ -86,7 +87,16 @@ void* mem_malloc(const uint32_t size)
 		{
             for(i=0;i<block_size;i++)      // mark using
             {  
-				mem_map[offset+i]=block_size;
+				//mem_map[offset+i]=block_size;
+#if MAX_BLOCK_SIZE == MAX_BLOCK_SIZE_8bit
+                mem_map[offset+i]=(uint8_t)block_size;		        
+#elif MAX_BLOCK_SIZE == MAX_BLOCK_SIZE_16bit
+                mem_map[offset+i]=(uint16_t)block_size;		        
+#elif MAX_BLOCK_SIZE == MAX_BLOCK_SIZE_32bit
+                mem_map[offset+i]=block_size;			        
+#else
+#error "Don't set MAX_BLOCK_SIZE!"
+#endif
             }
 			block_addr = offset<<MEM_BLOCK_WIDTH;
 			return &mem_ram[block_addr];
@@ -100,8 +110,8 @@ void* mem_malloc(const uint32_t size)
 }
 static inline void _free(const uint32_t block_offset)  
 {  
-    int i;  
-	int block_size=mem_map[block_offset];
+    uint32_t i;  
+	uint32_t block_size=mem_map[block_offset];
 	for(i=0;i<block_size;i++)
 	{
 		// mark empty mem

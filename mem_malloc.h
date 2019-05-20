@@ -18,6 +18,7 @@ extern "C"
 #endif
 	
 #include <stdint.h>
+#include <stddef.h>
 #ifndef NULL
 #define NULL 0
 #endif
