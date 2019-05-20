@@ -13,19 +13,19 @@
 #include <string.h>
 
 #ifndef MEM_BLOCK_WIDTH
-#define MEM_BLOCK_WIDTH			4        // 内存块宽度
+#define MEM_BLOCK_WIDTH			4        /* 内存块宽度 */
 #endif
 #ifndef MEM_MAX_SIZE
-#define MEM_MAX_SIZE			2*1024   // 最大管理内存 2K
+#define MEM_MAX_SIZE			2*1024   /* 最大管理内存 2K */
 #endif
 
-#define MEM_BLOCK_SIZE			(0x1<<MEM_BLOCK_WIDTH)                  // 内存块大小(2^MEM_BLOCK_WIDTH), 单位字节
-//#define MEM_ALLOC_TABLE_SIZE	MEM_MAX_SIZE/MEM_BLOCK_SIZE 	        // 内存表大小
-#define MEM_ALLOC_TABLE_SIZE	(((MEM_MAX_SIZE)>>MEM_BLOCK_WIDTH)+1) 	// 内存表大小
+#define MEM_BLOCK_SIZE			(0x1<<MEM_BLOCK_WIDTH)                  /* 内存块大小(2^MEM_BLOCK_WIDTH), 单位字节 */
+//#define MEM_ALLOC_TABLE_SIZE	MEM_MAX_SIZE/MEM_BLOCK_SIZE 	        /* 内存表大小 */
+#define MEM_ALLOC_TABLE_SIZE	(((MEM_MAX_SIZE)>>MEM_BLOCK_WIDTH)+1) 	/* 内存表大小 */
 
 // mem align 4 byte
-__align(4) static uint8_t mem_ram[MEM_ALLOC_TABLE_SIZE<<MEM_BLOCK_WIDTH]={0};			    // SRAM内存池
-// SRAM内存表
+__align(4) static uint8_t mem_ram[MEM_ALLOC_TABLE_SIZE<<MEM_BLOCK_WIDTH]={0};			    /* SRAM内存池 */
+/* SRAM内存表 */
 #if MAX_BLOCK_SIZE == MAX_BLOCK_SIZE_8bit
 static uint8_t mem_map[MEM_ALLOC_TABLE_SIZE]={0};			        
 #elif MAX_BLOCK_SIZE == MAX_BLOCK_SIZE_16bit
@@ -35,19 +35,21 @@ static uint32_t mem_map[MEM_ALLOC_TABLE_SIZE]={0};
 #else
 #error "Don't set MAX_BLOCK_SIZE!"
 #endif
-//内存管理参数	   
-static const uint32_t mem_map_size=MEM_ALLOC_TABLE_SIZE;		    // 内存表大小
+/* 内存管理参数 */
+static const uint32_t mem_map_size=MEM_ALLOC_TABLE_SIZE;		    /* 内存表大小 */
 static uint8_t ready = 0;
 
-//内存管理初始化  
+/* 内存管理初始化 */
 static void init(void)  
 {  
     memset(mem_map, 0,sizeof(mem_map)); 
 	memset(mem_ram, 0, sizeof(mem_ram));
 	ready = 1;
-}  
-//获取内存使用率
-//返回值:使用率(0~100)
+}
+/**  
+ * 获取内存使用率
+ * 返回值:使用率(0~100)
+*/
 uint8_t mem_perused(void)  
 {  
     uint32_t used=0;  
