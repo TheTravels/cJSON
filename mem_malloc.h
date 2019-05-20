@@ -24,13 +24,13 @@ extern "C"
 #endif
 
 /**
- * µ¥´Î·ÖÅä×î´óÄÚ´æÊıÁ¿
- * 8bit: 2^8-1=255; 16bit: 2^16-1=65535; 32bit: 2^32-1, MCUÃ»ÓĞÕâÃ´´óÄÚ´æ,²»ÓÃ¸ÃÉèÖÃ
- * ×÷ÓÃ: 8bit Ïà±È 16bit ÄÚ´æ±í¿É½ÚÊ¡Ò»°ë,ÔÚÄÚ´æ·ÖÅä¿éÊıÁ¿²»³¬¹ı 255Ê±¿É½ÚÊ¡ÄÚ´æ,Õâ¶ÔÓÚµ¥Æ¬»úºÜÓĞÓÃ
- * ÄÚ´æ¿éÊıÁ¿¼ÆËã: size >> MEM_BLOCK_WIDTH
- * Í¬Ê±ĞèÒª×¢Òâ MEM_BLOCK_WIDTH Ô½´ó¼´µ¥¸öÄÚ´æ¿éÔ½´ó(2^MEM_BLOCK_WIDTH), ÔÚ¶¯Ì¬ÄÚ´æ·ÖÅä¹ı³ÌÖĞÀË·ÑÔ½¶à,
- * ÒòÎª²»¿ÉÄÜÃ¿´Î¶¼·ÖÅäµÄ¸Õ¸ÕºÃ, ËùÒÔÔÚµ¥Æ¬»úÖĞÎªÁË¼õÉÙÄÚ´æÀË·ÑÇë¸ù¾İĞèÒªµÄ×î´óÓë×îĞ¡ÄÚ´æÉèÖÃ MAX_BLOCK_SIZE Óë MEM_BLOCK_WIDTH.
- * Í¬Ê±¿ÉÒÔÍ¨¹ı mem_perused º¯Êı¹Û²ìÄÚ´æÊ¹ÓÃÂÊÒÔÉèÖÃ×îÓÅÖµ.
+ * å•æ¬¡åˆ†é…æœ€å¤§å†…å­˜æ•°é‡
+ * 8bit: 2^8-1=255; 16bit: 2^16-1=65535; 32bit: 2^32-1, MCUæ²¡æœ‰è¿™ä¹ˆå¤§å†…å­˜,ä¸ç”¨è¯¥è®¾ç½®
+ * ä½œç”¨: 8bit ç›¸æ¯” 16bit å†…å­˜è¡¨å¯èŠ‚çœä¸€åŠ,åœ¨å†…å­˜åˆ†é…å—æ•°é‡ä¸è¶…è¿‡ 255æ—¶å¯èŠ‚çœå†…å­˜,è¿™å¯¹äºå•ç‰‡æœºå¾ˆæœ‰ç”¨
+ * å†…å­˜å—æ•°é‡è®¡ç®—: size >> MEM_BLOCK_WIDTH
+ * åŒæ—¶éœ€è¦æ³¨æ„ MEM_BLOCK_WIDTH è¶Šå¤§å³å•ä¸ªå†…å­˜å—è¶Šå¤§(2^MEM_BLOCK_WIDTH), åœ¨åŠ¨æ€å†…å­˜åˆ†é…è¿‡ç¨‹ä¸­æµªè´¹è¶Šå¤š,
+ * å› ä¸ºä¸å¯èƒ½æ¯æ¬¡éƒ½åˆ†é…çš„åˆšåˆšå¥½, æ‰€ä»¥åœ¨å•ç‰‡æœºä¸­ä¸ºäº†å‡å°‘å†…å­˜æµªè´¹è¯·æ ¹æ®éœ€è¦çš„æœ€å¤§ä¸æœ€å°å†…å­˜è®¾ç½® MAX_BLOCK_SIZE ä¸ MEM_BLOCK_WIDTH.
+ * åŒæ—¶å¯ä»¥é€šè¿‡ mem_perused å‡½æ•°è§‚å¯Ÿå†…å­˜ä½¿ç”¨ç‡ä»¥è®¾ç½®æœ€ä¼˜å€¼.
  */
 #define MAX_BLOCK_SIZE_8bit     0x01
 #define MAX_BLOCK_SIZE_16bit    0x02
@@ -38,21 +38,21 @@ extern "C"
 #define MAX_BLOCK_SIZE   MAX_BLOCK_SIZE_8bit   
 
 /**
- * ÄÚ´æ¿é¿í¶È, ÄÚ´æ¿é´óĞ¡(2^MEM_BLOCK_WIDTH), µ¥Î»×Ö½Ú.ÓÃÓÚ¼Ó¿ìÄÚ´æ·ÖÅäÊ±µÄÔËËãËÙ¶È
+ * å†…å­˜å—å®½åº¦, å†…å­˜å—å¤§å°(2^MEM_BLOCK_WIDTH), å•ä½å­—èŠ‚.ç”¨äºåŠ å¿«å†…å­˜åˆ†é…æ—¶çš„è¿ç®—é€Ÿåº¦
  */
 #define MEM_BLOCK_WIDTH			4                               
 /**
- * ×î´ó¹ÜÀíÄÚ´æ 10K
+ * æœ€å¤§ç®¡ç†å†…å­˜ 10K
  */
 #define MEM_MAX_SIZE			(10*1024)  						
 
-extern uint8_t mem_perused(void);					            /* ÄÚ´æÊ¹ÓÃÂÊ */
-extern void  mem_free(void *ptr);  				                /* ÄÚ´æÊÍ·Å */
-extern void* mem_malloc(const uint32_t size);				    /* ÄÚ´æ·ÖÅä */
-extern void* mem_realloc(void *ptr, const uint32_t size);	    /* ÖØĞÂ·ÖÅäÄÚ´æ */
+extern uint8_t mem_perused(void);					            /* å†…å­˜ä½¿ç”¨ç‡ */
+extern void  mem_free(void *ptr);  				                /* å†…å­˜é‡Šæ”¾ */
+extern void* mem_malloc(const uint32_t size);				    /* å†…å­˜åˆ†é… */
+extern void* mem_realloc(void *ptr, const uint32_t size);	    /* é‡æ–°åˆ†é…å†…å­˜ */
 /**    size_t    **/
-extern void* smem_malloc(size_t size);				            /* ÄÚ´æ·ÖÅä */
-extern void* smem_realloc(void *ptr, size_t size);	            /* ÖØĞÂ·ÖÅäÄÚ´æ */
+extern void* smem_malloc(size_t size);				            /* å†…å­˜åˆ†é… */
+extern void* smem_realloc(void *ptr, size_t size);	            /* é‡æ–°åˆ†é…å†…å­˜ */
 
 #ifdef __cplusplus
 }

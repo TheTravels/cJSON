@@ -13,20 +13,20 @@
 #include <string.h>
 
 #ifndef MEM_BLOCK_WIDTH
-#define MEM_BLOCK_WIDTH			4        /* ÄÚ´æ¿é¿í¶È */
+#define MEM_BLOCK_WIDTH			4        /* å†…å­˜å—å®½åº¦ */
 #endif
 #ifndef MEM_MAX_SIZE
-#define MEM_MAX_SIZE			2*1024   /* ×î´ó¹ÜÀíÄÚ´æ 2K */
+#define MEM_MAX_SIZE			2*1024   /* æœ€å¤§ç®¡ç†å†…å­˜ 2K */
 #endif
 
-#define MEM_BLOCK_SIZE			(0x1<<MEM_BLOCK_WIDTH)                  /* ÄÚ´æ¿é´óĞ¡(2^MEM_BLOCK_WIDTH), µ¥Î»×Ö½Ú */
-/*#define MEM_ALLOC_TABLE_SIZE	MEM_MAX_SIZE/MEM_BLOCK_SIZE 	         ÄÚ´æ±í´óĞ¡ */
-#define MEM_ALLOC_TABLE_SIZE	(((MEM_MAX_SIZE)>>MEM_BLOCK_WIDTH)+1) 	/* ÄÚ´æ±í´óĞ¡ */
+#define MEM_BLOCK_SIZE			(0x1<<MEM_BLOCK_WIDTH)                  /* å†…å­˜å—å¤§å°(2^MEM_BLOCK_WIDTH), å•ä½å­—èŠ‚ */
+/*#define MEM_ALLOC_TABLE_SIZE	MEM_MAX_SIZE/MEM_BLOCK_SIZE 	         å†…å­˜è¡¨å¤§å° */
+#define MEM_ALLOC_TABLE_SIZE	(((MEM_MAX_SIZE)>>MEM_BLOCK_WIDTH)+1) 	/* å†…å­˜è¡¨å¤§å° */
 
 /* mem align 4 byte */
-/*__align(4) static uint8_t mem_ram[MEM_ALLOC_TABLE_SIZE<<MEM_BLOCK_WIDTH]={0};			   */ /* SRAMÄÚ´æ³Ø */
-static uint8_t __attribute__ ((aligned (16))) mem_ram[MEM_ALLOC_TABLE_SIZE<<MEM_BLOCK_WIDTH]={0};			    /* SRAMÄÚ´æ³Ø */
-/* SRAMÄÚ´æ±í */
+/*__align(4) static uint8_t mem_ram[MEM_ALLOC_TABLE_SIZE<<MEM_BLOCK_WIDTH]={0};			   */ /* SRAMå†…å­˜æ±  */
+static uint8_t __attribute__ ((aligned (16))) mem_ram[MEM_ALLOC_TABLE_SIZE<<MEM_BLOCK_WIDTH]={0};			    /* SRAMå†…å­˜æ±  */
+/* SRAMå†…å­˜è¡¨ */
 #if MAX_BLOCK_SIZE == MAX_BLOCK_SIZE_8bit
 static uint8_t mem_map[MEM_ALLOC_TABLE_SIZE]={0};			        
 #elif MAX_BLOCK_SIZE == MAX_BLOCK_SIZE_16bit
@@ -36,11 +36,11 @@ static uint32_t mem_map[MEM_ALLOC_TABLE_SIZE]={0};
 #else
 #error "Don't set MAX_BLOCK_SIZE!"
 #endif
-/* ÄÚ´æ¹ÜÀí²ÎÊı */
-static const uint32_t mem_map_size=MEM_ALLOC_TABLE_SIZE;		    /* ÄÚ´æ±í´óĞ¡ */
+/* å†…å­˜ç®¡ç†å‚æ•° */
+static const uint32_t mem_map_size=MEM_ALLOC_TABLE_SIZE;		    /* å†…å­˜è¡¨å¤§å° */
 static uint8_t ready = 0;
 
-/* ÄÚ´æ¹ÜÀí³õÊ¼»¯ */
+/* å†…å­˜ç®¡ç†åˆå§‹åŒ– */
 static void init(void)  
 {  
     memset(mem_map, 0,sizeof(mem_map)); 
@@ -48,8 +48,8 @@ static void init(void)
 	ready = 1;
 }
 /**  
- * »ñÈ¡ÄÚ´æÊ¹ÓÃÂÊ
- * ·µ»ØÖµ:Ê¹ÓÃÂÊ(0~100)
+ * è·å–å†…å­˜ä½¿ç”¨ç‡
+ * è¿”å›å€¼:ä½¿ç”¨ç‡(0~100)
 */
 uint8_t mem_perused(void)  
 {  
@@ -151,11 +151,11 @@ void* mem_realloc(void *ptr, const uint32_t size)
     } 	
 }
 
-void* smem_malloc(size_t size)				            /* ÄÚ´æ·ÖÅä */
+void* smem_malloc(size_t size)				            /* å†…å­˜åˆ†é… */
 {
 	return mem_malloc((const uint32_t)size);
 }
-void* smem_realloc(void *ptr, size_t size)	            /* ÖØĞÂ·ÖÅäÄÚ´æ */
+void* smem_realloc(void *ptr, size_t size)	            /* é‡æ–°åˆ†é…å†…å­˜ */
 {
 	return mem_realloc(ptr, (const uint32_t)size);
 }
