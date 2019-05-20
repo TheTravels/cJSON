@@ -49,6 +49,9 @@ extern uint8_t mem_perused(void);					            /* 内存使用率 */
 extern void  mem_free(void *ptr);  				                /* 内存释放 */
 extern void* mem_malloc(const uint32_t size);				    /* 内存分配 */
 extern void* mem_realloc(void *ptr, const uint32_t size);	    /* 重新分配内存 */
+/**    size_t    **/
+extern void* smem_malloc(size_t size);				            /* 内存分配 */
+extern void* smem_realloc(void *ptr, size_t size);	            /* 重新分配内存 */
 
 #ifdef __cplusplus
 }

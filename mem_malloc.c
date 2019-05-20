@@ -139,3 +139,12 @@ void* mem_realloc(void *ptr, const uint32_t size)
     } 	
 }
 
+void* smem_malloc(size_t size)				            /* 内存分配 */
+{
+	return mem_malloc((const uint32_t)size);
+}
+void* smem_realloc(void *ptr, size_t size)	            /* 重新分配内存 */
+{
+	return mem_realloc(ptr, (const uint32_t)size);
+}
+
